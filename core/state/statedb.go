@@ -1501,6 +1501,7 @@ func (s *StateDB) DebugPrint(block uint64, deleteEmptyObjects bool) {
 		log.Info("state object", "selfDestructed", obj.selfDestructed)
 		log.Info("state object", "deleted", obj.deleted)
 		log.Info("state object", "created", obj.created)
+		log.Info("....................origin state object .......................")
 		if obj.origin != nil {
 			log.Info("state object origin", "Nonce", obj.origin.Nonce)
 			log.Info("state object origin", "Balance", obj.origin.Balance)
@@ -1509,11 +1510,12 @@ func (s *StateDB) DebugPrint(block uint64, deleteEmptyObjects bool) {
 		} else {
 			log.Info("state object origin is nil")
 		}
+		log.Info("....................new state object.......................")
 		log.Info("state object new", "Nonce", obj.data.Nonce)
 		log.Info("state object new", "Balance", obj.data.Balance)
 		log.Info("state object new", "Root", obj.data.Root)
 		log.Info("state object new", "CodeHash", common.Bytes2Hex(obj.data.CodeHash))
-		log.Info("....................originStorage.......................`")
+		log.Info("....................originStorage.......................")
 		keys := make([]common.Hash, 0)
 		for key := range obj.originStorage {
 			keys = append(keys, key)
