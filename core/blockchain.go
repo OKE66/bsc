@@ -2264,11 +2264,11 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 		statedb, receipts, logs, usedGas, err := bc.processor.Process(block, statedb, bc.vmConfig)
 		close(interruptCh) // state prefetch can be stopped
 		if err != nil {
-			statedb.DebugPrint(block.NumberU64(), true)
 			bc.reportBlock(block, receipts, err)
 			statedb.StopPrefetcher()
 			return it.index, err
 		}
+		statedb.DebugPrint(block.NumberU64(), true)
 		ptime := time.Since(pstart)
 
 		// Validate the state using the default validator
