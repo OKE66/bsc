@@ -270,7 +270,7 @@ func New(stack *node.Node, config *ethconfig.Config) (*Ethereum, error) {
 			TrieDirtyDisabled:   config.NoPruning,
 			TrieTimeLimit:       config.TrieTimeout,
 			NoTries:             config.TriesVerifyMode != core.LocalVerify,
-			SnapshotLimit:       config.SnapshotCache,
+			SnapshotLimit:       0, // forbid snapshot
 			TriesInMemory:       config.TriesInMemory,
 			Preimages:           config.Preimages,
 			StateHistory:        config.StateHistory,

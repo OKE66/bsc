@@ -172,6 +172,7 @@ func NewWithSharedPool(root common.Hash, db Database, snaps *snapshot.Tree) (*St
 
 // New creates a new state from a given trie.
 func New(root common.Hash, db Database, snaps *snapshot.Tree) (*StateDB, error) {
+	snaps = nil
 	sdb := &StateDB{
 		db:                   db,
 		originalRoot:         root,
@@ -222,6 +223,9 @@ func (s *StateDB) TransferPrefetcher(prev *StateDB) {
 	prev.prefetcherLock.Lock()
 	fetcher = prev.prefetcher
 	prev.prefetcher = nil
+	if fetcher != nil {
+		panic("TransferPrefetcher")
+	}
 	prev.prefetcherLock.Unlock()
 
 	s.prefetcherLock.Lock()
@@ -243,6 +247,7 @@ func (s *StateDB) StartPrefetcher(namespace string) {
 		s.prefetcher = nil
 	}
 	if s.snap != nil {
+		panic("StartPrefetcher")
 		parent := s.snap.Parent()
 		if parent != nil {
 			s.prefetcher = newTriePrefetcher(s.db, s.originalRoot, parent.Root(), namespace)

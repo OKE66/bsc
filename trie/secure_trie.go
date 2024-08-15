@@ -19,6 +19,7 @@ package trie
 import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/ethereum/go-ethereum/trie/trienode"
 	"github.com/ethereum/go-ethereum/triedb/database"
@@ -86,12 +87,13 @@ func (t *StateTrie) MustGet(key []byte) []byte {
 // and slot key. The value bytes must not be modified by the caller.
 // If the specified storage slot is not in the trie, nil will be returned.
 // If a trie node is not found in the database, a MissingNodeError is returned.
-func (t *StateTrie) GetStorage(_ common.Address, key []byte) ([]byte, error) {
+func (t *StateTrie) GetStorage(addr common.Address, key []byte) ([]byte, error) {
 	enc, err := t.trie.Get(t.hashKey(key))
 	if err != nil || len(enc) == 0 {
 		return nil, err
 	}
 	_, content, _, err := rlp.Split(enc)
+	log.Info("get storage", "owner", addr.String(), "key", common.Bytes2Hex(key), "val", common.Bytes2Hex(content))
 	return content, err
 }
 
@@ -105,6 +107,7 @@ func (t *StateTrie) GetAccount(address common.Address) (*types.StateAccount, err
 	}
 	ret := new(types.StateAccount)
 	err = rlp.DecodeBytes(res, ret)
+	log.Info("get account", "addr", address.String(), "nonce", ret.Nonce, "balance", ret.Balance, "root", ret.Root.String(), "code", common.Bytes2Hex(ret.CodeHash))
 	return ret, err
 }
 
@@ -152,7 +155,7 @@ func (t *StateTrie) MustUpdate(key, value []byte) {
 // stored in the trie.
 //
 // If a node is not found in the database, a MissingNodeError is returned.
-func (t *StateTrie) UpdateStorage(_ common.Address, key, value []byte) error {
+func (t *StateTrie) UpdateStorage(address common.Address, key, value []byte) error {
 	hk := t.hashKey(key)
 	v, _ := rlp.EncodeToBytes(value)
 	err := t.trie.Update(hk, v)
@@ -160,6 +163,7 @@ func (t *StateTrie) UpdateStorage(_ common.Address, key, value []byte) error {
 		return err
 	}
 	t.getSecKeyCache()[string(hk)] = common.CopyBytes(key)
+	log.Info("update storage", "owner", address.String(), "key", common.Bytes2Hex(key), "val", common.Bytes2Hex(value))
 	return nil
 }
 
@@ -174,6 +178,7 @@ func (t *StateTrie) UpdateAccount(address common.Address, acc *types.StateAccoun
 		return err
 	}
 	t.getSecKeyCache()[string(hk)] = address.Bytes()
+	log.Info("update account", "addr", address.String(), "nonce", acc.Nonce, "balance", acc.Balance, "root", acc.Root.String(), "code", common.Bytes2Hex(acc.CodeHash))
 	return nil
 }
 

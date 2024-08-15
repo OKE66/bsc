@@ -2233,28 +2233,28 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 		}
 		log.Info("+++++++++++++start block", "number", block.NumberU64())
 		defer log.Info("+++++++++++++end block", "number", block.NumberU64())
-		statedb, err := state.NewWithSharedPool(parent.Root, bc.stateCache, bc.snaps)
+		statedb, err := state.NewWithSharedPool(parent.Root, bc.stateCache, nil)
 		if err != nil {
 			return it.index, err
 		}
 		bc.updateHighestVerifiedHeader(block.Header())
 
 		// Enable prefetching to pull in trie node paths while processing transactions
-		statedb.StartPrefetcher("chain")
+		//statedb.StartPrefetcher("chain")
 		interruptCh := make(chan struct{})
 		// For diff sync, it may fallback to full sync, so we still do prefetch
-		if len(block.Transactions()) >= prefetchTxNumber {
-			// do Prefetch in a separate goroutine to avoid blocking the critical path
-
-			// 1.do state prefetch for snapshot cache
-			throwaway := statedb.CopyDoPrefetch()
-			go bc.prefetcher.Prefetch(block, throwaway, &bc.vmConfig, interruptCh)
-
-			// 2.do trie prefetch for MPT trie node cache
-			// it is for the big state trie tree, prefetch based on transaction's From/To address.
-			// trie prefetcher is thread safe now, ok to prefetch in a separate routine
-			go throwaway.TriePrefetchInAdvance(block, signer)
-		}
+		//if len(block.Transactions()) >= prefetchTxNumber {
+		//	// do Prefetch in a separate goroutine to avoid blocking the critical path
+		//
+		//	// 1.do state prefetch for snapshot cache
+		//	throwaway := statedb.CopyDoPrefetch()
+		//	go bc.prefetcher.Prefetch(block, throwaway, &bc.vmConfig, interruptCh)
+		//
+		//	// 2.do trie prefetch for MPT trie node cache
+		//	// it is for the big state trie tree, prefetch based on transaction's From/To address.
+		//	// trie prefetcher is thread safe now, ok to prefetch in a separate routine
+		//	go throwaway.TriePrefetchInAdvance(block, signer)
+		//}
 
 		// Process block using the parent state as reference point
 		if bc.pipeCommit {
