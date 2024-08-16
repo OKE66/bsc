@@ -2279,6 +2279,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 			statedb.StopPrefetcher()
 			return it.index, err
 		}
+		statedb.DebugPrint(block.NumberU64(), true)
 		vtime := time.Since(vstart)
 		proctime := time.Since(start) // processing + validation
 
