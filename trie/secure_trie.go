@@ -197,9 +197,10 @@ func (t *StateTrie) MustDelete(key []byte) {
 // DeleteStorage removes any existing storage slot from the trie.
 // If the specified trie node is not in the trie, nothing will be changed.
 // If a node is not found in the database, a MissingNodeError is returned.
-func (t *StateTrie) DeleteStorage(_ common.Address, key []byte) error {
+func (t *StateTrie) DeleteStorage(address common.Address, key []byte) error {
 	hk := t.hashKey(key)
 	delete(t.getSecKeyCache(), string(hk))
+	log.Info("update storage", "owner", address.String(), "key", common.Bytes2Hex(key))
 	return t.trie.Delete(hk)
 }
 
@@ -207,6 +208,7 @@ func (t *StateTrie) DeleteStorage(_ common.Address, key []byte) error {
 func (t *StateTrie) DeleteAccount(address common.Address) error {
 	hk := t.hashKey(address.Bytes())
 	delete(t.getSecKeyCache(), string(hk))
+	log.Info("delete account", "addr", address.String())
 	return t.trie.Delete(hk)
 }
 
