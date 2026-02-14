@@ -1,7 +1,6 @@
 module github.com/ethereum/go-ethereum
 
-go 1.21
-toolchain go1.22.5
+go 1.24.0
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.2.0
@@ -80,13 +79,13 @@ require (
 	github.com/wealdtech/go-eth2-wallet-encryptor-keystorev4 v1.1.3
 	github.com/willf/bitset v1.1.3
 	go.uber.org/automaxprocs v1.5.2
-	golang.org/x/crypto v0.26.0
+	golang.org/x/crypto v0.45.0
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842
-	golang.org/x/sync v0.8.0
-	golang.org/x/sys v0.23.0
-	golang.org/x/text v0.17.0
+	golang.org/x/sync v0.18.0
+	golang.org/x/sys v0.38.0
+	golang.org/x/text v0.31.0
 	golang.org/x/time v0.5.0
-	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d
+	golang.org/x/tools v0.38.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -272,10 +271,11 @@ require (
 	go.uber.org/mock v0.4.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/mod v0.17.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
+	golang.org/x/mod v0.29.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/oauth2 v0.16.0 // indirect
-	golang.org/x/term v0.23.0 // indirect
+	golang.org/x/telemetry v0.0.0-20251008203120-078029d740a8 // indirect
+	golang.org/x/term v0.37.0 // indirect
 	google.golang.org/api v0.44.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20231016165738-49dd2c1f3d0b // indirect
